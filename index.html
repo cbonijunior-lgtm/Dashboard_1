@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Financeiro — B3</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">D</div>
+        <span>Develop</span>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item"><span class="nav-icon">▦</span> Dashboard</a>
+        <a href="#" class="nav-item"><span class="nav-icon">◈</span> Carteira</a>
+        <a href="#" class="nav-item active"><span class="nav-icon">◉</span> Analytics</a>
+        <a href="#" class="nav-item"><span class="nav-icon">✉</span> Mensagens</a>
+        <a href="#" class="nav-item"><span class="nav-icon">⇄</span> Cotações</a>
+        <a href="#" class="nav-item"><span class="nav-icon">◎</span> Setores</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="#" class="nav-item"><span class="nav-icon">⚙</span> Configurações</a>
+        <a href="#" class="nav-item"><span class="nav-icon">🔔</span> Notificações <span class="badge-dot"></span></a>
+        <a href="#" class="nav-item"><span class="nav-icon">↩</span> Sair</a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="header">
+        <div class="header-left">
+          <h1>Olá, bem-vindo de volta</h1>
+          <p class="subtitle">Dashboard de FIIs e BDRs — clique nos gráficos para filtrar</p>
+        </div>
+        <div class="header-right">
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Buscar ticker ou empresa...">
+          </div>
+          <div class="user-avatar">CK</div>
+        </div>
+      </header>
+
+      <section class="filters-bar">
+        <div class="filter-group">
+          <label for="tipoFilter">Tipo</label>
+          <select id="tipoFilter">
+            <option value="">Todos</option>
+            <option value="FII">Fundos Imobiliários</option>
+            <option value="BDR">BDRs</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="sectorFilter">Setor</label>
+          <select id="sectorFilter">
+            <option value="">Todos os setores</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="variationFilter">Variação</label>
+          <select id="variationFilter">
+            <option value="">Todas</option>
+            <option value="positive">Positivas</option>
+            <option value="negative">Negativas</option>
+            <option value="high">Acima de 2%</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="dyFilter">Dividend Yield</label>
+          <select id="dyFilter">
+            <option value="">Todos</option>
+            <option value="high">Acima de 6%</option>
+            <option value="medium">3% – 6%</option>
+            <option value="low">Abaixo de 3%</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="plFilter">P/L</label>
+          <select id="plFilter">
+            <option value="">Todos</option>
+            <option value="cheap">Até 10x</option>
+            <option value="fair">10x – 20x</option>
+            <option value="expensive">Acima de 20x</option>
+          </select>
+        </div>
+        <button type="button" id="clearFilters" class="btn-clear">Limpar filtros</button>
+        <div class="active-filters" id="activeFilters"></div>
+      </section>
+
+      <section class="kpi-grid">
+        <article class="kpi-card kpi-purple">
+          <div class="kpi-header">
+            <span>Valor Total da Carteira</span>
+            <span class="kpi-badge">simulado</span>
+          </div>
+          <div class="kpi-value" id="kpiPortfolio">—</div>
+          <div class="kpi-change positive" id="kpiPortfolioChange">—</div>
+          <canvas id="sparkPortfolio" class="kpi-spark"></canvas>
+        </article>
+        <article class="kpi-card kpi-pink">
+          <div class="kpi-header">
+            <span>Variação Média do Dia</span>
+            <span class="kpi-badge" id="kpiCount">— ativos</span>
+          </div>
+          <div class="kpi-value" id="kpiVariation">—</div>
+          <div class="kpi-change" id="kpiVariationLabel">média ponderada</div>
+          <canvas id="sparkVariation" class="kpi-spark"></canvas>
+        </article>
+        <article class="kpi-card kpi-cyan">
+          <div class="kpi-header">
+            <span>Volume Negociado</span>
+            <span class="kpi-badge">total</span>
+          </div>
+          <div class="kpi-value" id="kpiVolume">—</div>
+          <div class="kpi-change positive" id="kpiVolumeLabel">ativos filtrados</div>
+          <canvas id="sparkVolume" class="kpi-spark"></canvas>
+        </article>
+        <article class="kpi-card kpi-green">
+          <div class="kpi-header">
+            <span>Dividend Yield Médio</span>
+            <span class="kpi-badge">anual</span>
+          </div>
+          <div class="kpi-value" id="kpiDY">—</div>
+          <div class="kpi-change positive" id="kpiDYLabel">média do filtro</div>
+          <canvas id="sparkDY" class="kpi-spark"></canvas>
+        </article>
+      </section>
+
+      <section class="charts-grid">
+        <article class="chart-card chart-wide">
+          <div class="chart-header">
+            <h2>P/VP ou P/L por Setor</h2>
+            <span class="chart-hint">Clique nas barras para filtrar</span>
+          </div>
+          <div class="chart-body">
+            <canvas id="chartPL"></canvas>
+          </div>
+        </article>
+
+        <article class="chart-card">
+          <div class="chart-header">
+            <h2>Alocação por Setor</h2>
+            <span class="chart-hint">Clique nas fatias</span>
+          </div>
+          <div class="chart-body chart-donut">
+            <canvas id="chartSector"></canvas>
+          </div>
+        </article>
+
+        <article class="chart-card">
+          <div class="chart-header">
+            <h2>Dividend Yield</h2>
+            <span class="chart-hint">Clique nas barras</span>
+          </div>
+          <div class="chart-body">
+            <canvas id="chartDY"></canvas>
+          </div>
+        </article>
+
+        <article class="chart-card chart-wide">
+          <div class="chart-header">
+            <h2>Variação do Dia (%)</h2>
+            <span class="chart-hint">Clique nos pontos</span>
+          </div>
+          <div class="chart-body">
+            <canvas id="chartVariation"></canvas>
+          </div>
+        </article>
+      </section>
+
+      <section class="table-section">
+        <div class="chart-header">
+          <h2>Cotações Detalhadas</h2>
+          <span class="chart-hint">Clique em uma linha para filtrar por ticker</span>
+        </div>
+        <div class="table-wrapper">
+          <table id="dataTable">
+            <thead>
+              <tr>
+                <th>Ticker</th>
+                <th>Empresa</th>
+                <th>Tipo</th>
+                <th>Setor</th>
+                <th>Preço</th>
+                <th>Abertura</th>
+                <th>Máxima</th>
+                <th>Mínima</th>
+                <th>Var. Dia</th>
+                <th>P/VP ou P/L</th>
+                <th>Div. Yield</th>
+                <th>Volume</th>
+                <th>Data</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
