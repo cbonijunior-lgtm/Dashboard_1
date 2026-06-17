@@ -1,8 +1,8 @@
 // Substitua pelos valores do seu projeto em: Dashboard → Project Settings → API
 // Schema da tabela: supabase-schema.js | SQL: supabase/setup.sql
 
-const SUPABASE_URL = 'https://dashboard-1-phi-eight.vercel.app/login.html';
-const SUPABASE_ANON_KEY = 'SUA_ANON_KEY_AQUI';
+const SUPABASE_URL = 'https://abjoifjfrtdaxtjtmeqk.supabase.co/rest/v1/';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFiam9pZmpmcnRkYXh0anRtZXFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNDI2MzUsImV4cCI6MjA5NjkxODYzNX0.oHl1G23YOCqapKMNgnD855wNrOvvLVtopbNWaLlugvo';
 
 // Opcional: fixe a URL publicada (ex.: GitHub Pages). Deixe null para detectar automaticamente.
 const APP_BASE_URL = 'https://cbonijunior-lgtm.github.io/Dashboard_1/';
