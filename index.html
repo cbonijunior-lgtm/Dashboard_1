@@ -28,14 +28,14 @@
       <div class="sidebar-footer">
         <a href="#" class="nav-item"><span class="nav-icon">⚙</span> Configurações</a>
         <a href="#" class="nav-item"><span class="nav-icon">🔔</span> Notificações <span class="badge-dot"></span></a>
-        <a href="#" class="nav-item"><span class="nav-icon">↩</span> Sair</a>
+        <a href="#" class="nav-item" id="logoutBtn"><span class="nav-icon">↩</span> Sair</a>
       </div>
     </aside>
 
     <main class="main">
       <header class="header">
         <div class="header-left">
-          <h1>Olá, bem-vindo de volta</h1>
+          <h1 id="userGreeting">Olá, bem-vindo de volta</h1>
           <p class="subtitle">Dashboard de FIIs e BDRs — clique nos gráficos para filtrar</p>
         </div>
         <div class="header-right">
@@ -43,7 +43,7 @@
             <span class="search-icon">🔍</span>
             <input type="text" id="searchInput" placeholder="Buscar ticker ou empresa...">
           </div>
-          <div class="user-avatar">CK</div>
+          <div class="user-avatar" id="userAvatar">CK</div>
         </div>
       </header>
 
@@ -205,6 +205,17 @@
     </main>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="supabase-schema.js"></script>
+  <script src="supabase-client.js"></script>
+  <script src="auth.js"></script>
   <script src="app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      bindLogout();
+      initAuthGuard(init);
+    });
+  </script>
 </body>
 </html>

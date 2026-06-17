@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrar — Dashboard Financeiro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="auth-page">
+  <div class="auth-layout">
+    <aside class="auth-brand">
+      <div class="sidebar-brand">
+        <div class="brand-icon">D</div>
+        <span>Develop</span>
+      </div>
+      <h1>Dashboard Financeiro</h1>
+      <p>Acesse sua carteira de FIIs e BDRs com dados sincronizados no Supabase.</p>
+      <ul class="auth-features">
+        <li>Autenticação segura com e-mail e senha</li>
+        <li>Perfil com nome completo no cadastro</li>
+        <li>Dados protegidos por Row Level Security</li>
+      </ul>
+      <p class="auth-hint">Publicado? Use <code>/login.html</code> e configure as URLs no Supabase (Authentication → URL Configuration).</p>
+    </aside>
+
+    <main class="auth-card">
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab active" data-tab="login">Entrar</button>
+        <button type="button" class="auth-tab" data-tab="signup">Criar conta</button>
+      </div>
+
+      <div id="authMessage" class="auth-message" hidden></div>
+
+      <div class="auth-panel active" data-panel="login">
+        <h2>Bem-vindo de volta</h2>
+        <p class="auth-subtitle">Entre com seu e-mail e senha</p>
+        <form id="loginForm" class="auth-form">
+          <div class="form-group">
+            <label for="loginEmail">E-mail</label>
+            <input type="email" id="loginEmail" name="email" required autocomplete="email" placeholder="voce@email.com">
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Senha</label>
+            <input type="password" id="loginPassword" name="password" required autocomplete="current-password" placeholder="••••••••" minlength="6">
+          </div>
+          <button type="submit" class="btn-primary">Entrar</button>
+        </form>
+      </div>
+
+      <div class="auth-panel" data-panel="signup">
+        <h2>Criar conta</h2>
+        <p class="auth-subtitle">Cadastre-se para acessar o dashboard</p>
+        <form id="signupForm" class="auth-form">
+          <div class="form-group">
+            <label for="signupName">Nome completo</label>
+            <input type="text" id="signupName" name="full_name" required autocomplete="name" placeholder="Seu nome completo">
+          </div>
+          <div class="form-group">
+            <label for="signupEmail">E-mail</label>
+            <input type="email" id="signupEmail" name="email" required autocomplete="email" placeholder="voce@email.com">
+          </div>
+          <div class="form-group">
+            <label for="signupPassword">Senha</label>
+            <input type="password" id="signupPassword" name="password" required autocomplete="new-password" placeholder="Mínimo 6 caracteres" minlength="6">
+          </div>
+          <button type="submit" class="btn-primary">Criar conta</button>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="supabase-client.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', initLoginPage);
+  </script>
+</body>
+</html>

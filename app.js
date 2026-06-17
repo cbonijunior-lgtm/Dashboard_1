@@ -549,14 +549,32 @@ function bindEvents() {
   document.getElementById('clearFilters').addEventListener('click', clearAllFilters);
 }
 
+async function loadCotacoesFromSupabase() {
+  const client = requireSupabaseClient();
+  const cols = Object.values(SUPABASE_SCHEMA.columns).join(', ');
+  const { data, error } = await client
+    .from(SUPABASE_SCHEMA.table)
+    .select(cols)
+    .order(SUPABASE_SCHEMA.columns.data, { ascending: false });
+
+  if (error) throw error;
+  if (!data?.length) throw new Error(`Tabela "${SUPABASE_SCHEMA.table}" vazia`);
+
+  return data.map(row => enrichRow(mapSupabaseRow(row)));
+}
+
 async function init() {
   try {
-    const res = await fetch('cotacoes.csv');
-    const text = await res.text();
-    state.rawData = parseCSV(text);
+    state.rawData = await loadCotacoesFromSupabase();
   } catch {
-    console.warn('Fetch falhou — usando dados embutidos.');
-    state.rawData = EMBEDDED_DATA.map(enrichRow);
+    try {
+      const res = await fetch('cotacoes.csv');
+      const text = await res.text();
+      state.rawData = parseCSV(text);
+    } catch {
+      console.warn('Supabase e CSV indisponíveis — usando dados embutidos.');
+      state.rawData = EMBEDDED_DATA.map(enrichRow);
+    }
   }
 
   populateSectorFilter(state.rawData);
@@ -618,4 +636,3 @@ const EMBEDDED_DATA = [
   { ticker:'MAST34',empresa:'Mastercard BDR',preco:'82.65',abertura:'81.80',maxima:'83.40',minima:'81.50',variacao_dia:'1.04',volume:'1432100',data:'2026-06-13' }
 ];
 
-document.addEventListener('DOMContentLoaded', init);
