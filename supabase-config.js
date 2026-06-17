@@ -1,7 +1,7 @@
 // Substitua pelos valores do seu projeto em: Dashboard → Project Settings → API
 // Schema da tabela: supabase-schema.js | SQL: supabase/setup.sql
 
-const SUPABASE_URL = 'https://SEU_PROJETO.supabase.co';
+const SUPABASE_URL = 'https://dashboard-1-phi-eight.vercel.app/login.html';
 const SUPABASE_ANON_KEY = 'SUA_ANON_KEY_AQUI';
 
 // Opcional: fixe a URL publicada (ex.: GitHub Pages). Deixe null para detectar automaticamente.
